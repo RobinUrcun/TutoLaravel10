@@ -11,4 +11,5 @@
 </div>
 <p><span class="font-bold">Description : </span>{{ $product->description }}</p>
 <p><span class="font-bold">Prix : </span>{{ $product->price }} €</p>
+<p><span class="font-bold">Catégorie : </span><a href="{{ route('categorie', ['id'=> $product->category_id])}}"></a>{{ $product->category->category_name }} </p>
 @endsection
