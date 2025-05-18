@@ -20,9 +20,10 @@ return new class extends Migration
         });
 
         Schema::create('article_tag', function (Blueprint $table) {
-            $table->id();
             $table->foreignIdFor(Article::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Tag::class)->constrained()->cascadeOnDelete();
+            $table->primary(['article_id', 'tag_id']);
+
         });
     }
 

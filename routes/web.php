@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\RouteController;
+use App\Http\Controllers\AuthController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,4 +38,13 @@ Route::controller(RouteController::class)->group(function () {
     Route::post('/addTag', 'addTagPost');
     Route::get('/addTag/{id}', 'manageTag')->name('manageTag')->where(['id' => '^[0-9]+$']);
     Route::get('/tag/{id}', 'tag')->name('tag')->where(['id' => '^[0-9]+$']);
+    Route::post('/addTag/{id}', 'manageTagPost')->where(['id' => '^[0-9]+$']);
+});
+
+Route::controller(AuthController::class)->group(function () {
+    Route::get('/login', 'login')->name('login');
+    Route::post('/login', 'loginPost');
+    Route::get('/signup', 'signup')->name('signup');
+    Route::post('/signup', 'signupPost');
+    Route::delete('/logout', 'logout')->name('logout');
 });

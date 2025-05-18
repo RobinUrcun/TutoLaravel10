@@ -37,8 +37,9 @@ class RouteController extends Controller
 
     public function addProductPost(ManageProductRequest $request)
     {
+        $newArticle = Article::create($request->validated());
 
-        Article::create($request->validated());
+        $newArticle->tags()->sync($request->input('tag_id', []));
 
         return redirect()->route('boutique')->with('success', 'Le produit a bien été créé');
     }
@@ -59,6 +60,8 @@ class RouteController extends Controller
     {
 
         $id->update($request->validated());
+
+        $id->tags()->sync($request->input('tag_id', []));
 
         return redirect()->route('boutique')->with('success', 'Le produit a bien été modifié.');
     }
@@ -92,7 +95,7 @@ class RouteController extends Controller
     public function manageCategoryPost(Category $id, CategoryFilterRequest $request)
     {
         $id->update($request->validated());
-        return redirect()->route('getCategoriesList')->with('success', 'La catégorie     a bien été modifié.');
+        return redirect()->route('getCategoriesList')->with('success', 'La catégorie a bien été modifié.');
     }
 
     public function categorie(Category $id)
@@ -109,8 +112,8 @@ class RouteController extends Controller
 
     public function addTag()
     {
-
-        return view('page.manageTags');
+        $tag = new Tag();
+        return view('page.manageTags', ['tag' => $tag]);
     }
 
     public function addTagPost(TagFilterRequest $request)
@@ -122,5 +125,18 @@ class RouteController extends Controller
     public function tag(Tag $id)
     {
         return view('page.tag', ['tag' => $id]);
+    }
+
+    public function manageTag(Tag $id)
+    {
+
+        return view('page.manageTags', ['tag' => $id]);
+    }
+
+    public function manageTagPost(Tag $id, TagFilterRequest $request)
+    {
+        $id->update($request->validated());
+
+        return redirect()->route('page.tagsList', ['tagsList' => Tag::all()])->with('success', 'La catégorie a bien été créé');
     }
 }

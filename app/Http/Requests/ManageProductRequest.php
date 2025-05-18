@@ -22,19 +22,18 @@ class ManageProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'price' => ['required', 'numeric'],
+            'price' => ['required', 'numeric', 'gt:0'],
             'title' => ['required', 'regex:/^[A-Za-z0-9\s\-]+$/'],
             'slug' => ['required', 'regex:/^[A-Za-z0-9\-]+$/'],
             'description' => ['required', 'regex:/^[A-Za-z0-9\s\.,;:!?()\'"-]+$/'],
-            'category_id' => ['required', 'exists:categories,id'],
-            'tags' => ['exists:tags,id', 'array'],
+            'category_id' => ['required', 'exists:categories,id'],   
         ];
     }
     public function prepareForValidation()
     {
         $this->merge([
             'category_id' => (int) $this->category_id,
-            'price' => (float) $this->price,
+        'price' => str_replace(',', '.', $this->price),
         ]);
     }
 }
